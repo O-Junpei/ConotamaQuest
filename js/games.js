@@ -57,54 +57,47 @@ window.onload = function() {
     ]);
     // マップの当たり判定データ(タイルが当たり判定を持つかを表す2次元配列)
     map.collisionData = [
-      [1,1,1,1,0,0,0,0,1,1,1],
-      [1,1,1,1,0,0,0,0,1,1,1],
-      [1,1,1,1,0,0,0,0,1,1,1],
-      [1,1,1,1,0,0,0,0,1,1,1],
-      [1,1,1,1,0,0,0,0,1,1,1],
-      [1,1,1,1,0,0,0,1,1,1,1],
-      [1,1,1,1,0,0,0,1,1,1,1],
-      [1,1,1,1,0,0,0,1,1,1,1],
-      [1,1,1,1,0,0,0,1,1,1,1],
-      [0,0,0,0,0,0,0,1,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,0,1,1,1],
+      [1,1,1,1,1,0,0,1,1,1,1],
+      [1,1,1,1,1,0,0,1,1,1,1],
+      [1,1,1,1,1,0,0,1,1,1,1],
+      [1,1,1,1,1,0,0,1,1,1,1],
       [0,0,0,0,0,0,0,1,1,1,1],
       [1,1,1,1,1,1,1,1,1,1,1]
     ]
  
     // rootSceneにマップを追加する
     core.rootScene.addChild(map);
- 
+    var player = new Player(16,128,map);
 
-    //ゲームのメイン処理
+  }
 
-    //スプライトの生成
-    var player = new Sprite(48, 48);
+  //ゲームスタート
+  core.start();
+}
 
-    //スプライトで生成する画像を設定する
-    player.image = core.assets['images/betty.png'];
-
-    //表示するフレームの番号を設定する
-    player.frame = 3;
-
-    //表示位置のx座標を設定
-    player.x = 16;
-
-    //表示位置のy座標を設定
-    player.y = 128;
-
-    //フレーム数をカウントするプロパティを追加する。
-    player.tick = 0;
-
+// プレイヤーを作成するクラス
+var Player = enchant.Class.create(enchant.Sprite, {
+  initialize: function(x , y, map) {
+    enchant.Sprite.call(this, 32, 32);
+    this.x = x;
+    this.y = y;
+    this.image = core.assets['images/betty.png'];
+    this.frame = 3;
+    this.tick  = 0;
     //rootSceneにスプライトを追加
-    core.rootScene.addChild(player);
+    core.rootScene.addChild(this);
 
     //[enchantframe]イベントが発生したときに実行するリスナを登録する
-    player.addEventListener('enterframe',function(e){
-
+    this.addEventListener('enterframe',function(e){
 
       //左ボタンが押されたら、スプライトをx方向に「-4」ピクセル移動する。
       if(core.input.left){
-        
         this.x -=4;
 
         //マップ上に当たり判定がある場合は移動しない
@@ -170,9 +163,5 @@ window.onload = function() {
 
       }
     });
-
   }
-
-  //ゲームスタート
-  core.start();
-}
+});
